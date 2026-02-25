@@ -1,6 +1,43 @@
-import React from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { MdDelete } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
 
 function TodoList() {
+  const [task, setTask] = useState("");
+  const [alltask, setAlltask] = useState([]);
+
+  const hendleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .post("http://localhost:7000/todo", {
+        name: task,
+      })
+      .then(() => {
+        setTask("");
+        toast.success("Task Added Successfully");
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
+  };
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:7000/alltodos")
+      .then((res) => {
+        setAlltask(res.data.data);
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
+  }, [task]);
+
+  console.log(alltask);
+
+
+
   return (
     <div className="w-full pt-10">
       <div className="max-w-150 mx-auto bg-gray-200 px-3 py-6 rounded-sm">
@@ -8,12 +45,14 @@ function TodoList() {
           Todo-List
         </h2>
 
-        <form>
+        <form onSubmit={hendleSubmit}>
           <div>
             <input
               className="w-full bg-white py-2 px-2 border border-green-500 rounded-2xl"
               type="text"
+              value={task}
               placeholder="Enter Your Task"
+              onChange={(e) => setTask(e.target.value)}
             />
           </div>
           <div>
@@ -23,7 +62,25 @@ function TodoList() {
             />
           </div>
         </form>
+
+        <div className="mt-5">
+          <ul>
+            {alltask.map((item) => (
+              <li
+                key={item._id}
+                className="text-lg font-medium capitalize bg-white rounded-2xl py-2 px-4 mb-3 flex items-center justify-between"
+              >
+                <div>{item.title}</div>
+
+             
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
+
+
+
     </div>
   );
 }
