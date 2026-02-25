@@ -2,7 +2,7 @@ import React from 'react'
 
 function TodoList() {
   return (
-    <div>TodoList</div>
+    <div className='bg-red-600 py-10 text-center'>TodoList</div>
   )
 }
 
