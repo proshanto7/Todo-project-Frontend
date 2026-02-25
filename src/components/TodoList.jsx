@@ -14,17 +14,22 @@ function TodoList() {
 
   const hendleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:7000/todo", {
-        name: task,
-      })
-      .then(() => {
-        setTask("");
-        toast.success("Task Added Successfully");
-      })
-      .catch((err) => {
-        toast.error(err.message);
-      });
+    if (!task) {
+      alert("Please Enter Your Task");
+      return;
+    } else {
+      axios
+        .post("http://localhost:7000/todo", {
+          name: task,
+        })
+        .then(() => {
+          setTask("");
+          toast.success("Task Added Successfully");
+        })
+        .catch((err) => {
+          toast.error(err.message);
+        });
+    }
   };
 
   useEffect(() => {
@@ -42,14 +47,19 @@ function TodoList() {
 
   // hendle delet button
   const hendleDelet = (id) => {
-    axios
-      .delete(`http://localhost:7000/delettodo/${id}`)
-      .then(() => {
-        toast.success("Task Delet Successfully");
-      })
-      .catch((err) => {
-        toast.error(err.message);
-      });
+    const confirm = window.confirm("Are You Sure To Delet This Task ?");
+    if (!confirm) {
+      return;
+    } else {
+      axios
+        .delete(`http://localhost:7000/delettodo/${id}`)
+        .then(() => {
+          toast.success("Task Delet Successfully");
+        })
+        .catch((err) => {
+          toast.error(err.message);
+        });
+    }
   };
 
   // update function
@@ -59,17 +69,22 @@ function TodoList() {
   };
 
   const hendleupdateBtn = () => {
-    axios
-      .patch(`http://localhost:7000/updateTask/${updateId}`, {
-        name: updateTask,
-      })
-      .then(() => {
-        setEdit(false);
-        toast.success("task Updated Successfully");
-      })
-      .catch((err) => {
-        toast.error(err.message);
-      });
+    if (!updateTask) {
+      alert("Please Enter Your Task");
+      return;
+    } else {
+      axios
+        .patch(`http://localhost:7000/updateTask/${updateId}`, {
+          name: updateTask,
+        })
+        .then(() => {
+          setEdit(false);
+          toast.success("task Updated Successfully");
+        })
+        .catch((err) => {
+          toast.error(err.message);
+        });
+    }
   };
 
   return (
