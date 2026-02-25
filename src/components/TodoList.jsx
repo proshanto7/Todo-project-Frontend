@@ -36,7 +36,18 @@ function TodoList() {
 
   console.log(alltask);
 
-
+  // hendle delet button
+  const hendleDelet = (id) => {
+    axios
+      .delete(`http://localhost:7000/delettodo/${id}`)
+      .then(() => {
+        toast.success("Task Delet Successfully");
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
+     
+  };
 
   return (
     <div className="w-full pt-10">
@@ -72,7 +83,17 @@ function TodoList() {
               >
                 <div>{item.title}</div>
 
-             
+                <div className="flex items-center gap-4">
+                  <span>
+                    <FaEdit className="text-green-700 cursor-pointer" />
+                  </span>
+                  <span>
+                    <MdDelete
+                      className="text-red-600 cursor-pointer"
+                      onClick={() => hendleDelet(item._id)}
+                    />
+                  </span>
+                </div>
               </li>
             ))}
           </ul>
