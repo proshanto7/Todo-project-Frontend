@@ -3,11 +3,14 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
+import { TiDeleteOutline } from "react-icons/ti";
 
 function TodoList() {
   const [task, setTask] = useState("");
   const [alltask, setAlltask] = useState([]);
-  
+  const [edit, setEdit] = useState(false);
+  const [updateTask, setUpdateTask] = useState("");
+  const [updateId, setUpdateId] = useState("");
 
   const hendleSubmit = (e) => {
     e.preventDefault();
@@ -49,13 +52,25 @@ function TodoList() {
       });
   };
 
+  // update function
+  const editbox = (id) => {
+    setUpdateId(id);
+    setEdit(!edit);
+  };
 
-// update function
-const hendleupdateBtn = ()=>{
-
-  alert("psp")
-}
-
+  const hendleupdateBtn = () => {
+    axios
+      .patch(`http://localhost:7000/updateTask/${updateId}`, {
+        name: updateTask,
+      })
+      .then(() => {
+        setEdit(false);
+        toast.success("task Updated Successfully");
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
+  };
 
   return (
     <div className="w-full pt-10 relative">
@@ -93,7 +108,10 @@ const hendleupdateBtn = ()=>{
 
                 <div className="flex items-center gap-4">
                   <span>
-                    <FaEdit className="text-green-700 cursor-pointer" />
+                    <FaEdit
+                      className="text-green-700 cursor-pointer"
+                      onClick={() => editbox(item._id)}
+                    />
                   </span>
                   <span>
                     <MdDelete
@@ -108,21 +126,30 @@ const hendleupdateBtn = ()=>{
         </div>
       </div>
 
-      <div className="bg-black w-150 h-full mx-auto  absolute top-10 left-1/2 -translate-x-1/2 border border-red-500 px-5 py-20 rounded-md">
-        <div className="flex relative">
-          <input
-            type="text"
-            className="bg-gray-100 rounded-2xl  w-full py-2 px-5"
-            placeholder="Update Your Task"
-          />
-          <input
-            type="submit"
-            value="Update Task"
-            className="bg-green-700 py-2 px-5 absolute right-0 rounded-r-2xl cursor-pointer"
-            onClick={hendleupdateBtn}
-          />
+      {edit && (
+        <div className="bg-black w-150 h-full mx-auto  absolute top-10 left-1/2 -translate-x-1/2 border border-red-500 px-5 py-20 rounded-md">
+          <div className="flex relative">
+            <input
+              type="text"
+              className="bg-gray-100 rounded-2xl  w-full py-2 px-5"
+              placeholder="Update Your Task"
+              onChange={(e) => setUpdateTask(e.target.value)}
+            />
+            <input
+              type="submit"
+              value="Update Task"
+              className="bg-green-700 py-2 px-5 absolute right-0 rounded-r-2xl cursor-pointer"
+              onClick={hendleupdateBtn}
+            />
+          </div>
+          <button>
+            <TiDeleteOutline
+              className="text-red-600  absolute top-0 right-0 text-3xl cursor-pointer"
+              onClick={() => setEdit(false)}
+            />
+          </button>
         </div>
-      </div>
+      )}
     </div>
   );
 }
