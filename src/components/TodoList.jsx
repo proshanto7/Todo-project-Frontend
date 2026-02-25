@@ -7,6 +7,7 @@ import { FaEdit } from "react-icons/fa";
 function TodoList() {
   const [task, setTask] = useState("");
   const [alltask, setAlltask] = useState([]);
+  
 
   const hendleSubmit = (e) => {
     e.preventDefault();
@@ -46,11 +47,18 @@ function TodoList() {
       .catch((err) => {
         toast.error(err.message);
       });
-     
   };
 
+
+// update function
+const hendleupdateBtn = ()=>{
+
+  alert("psp")
+}
+
+
   return (
-    <div className="w-full pt-10">
+    <div className="w-full pt-10 relative">
       <div className="max-w-150 mx-auto bg-gray-200 px-3 py-6 rounded-sm">
         <h2 className="font-serif text-3xl font-semibold text-center mb-6">
           Todo-List
@@ -100,8 +108,21 @@ function TodoList() {
         </div>
       </div>
 
-
-
+      <div className="bg-black w-150 h-full mx-auto  absolute top-10 left-1/2 -translate-x-1/2 border border-red-500 px-5 py-20 rounded-md">
+        <div className="flex relative">
+          <input
+            type="text"
+            className="bg-gray-100 rounded-2xl  w-full py-2 px-5"
+            placeholder="Update Your Task"
+          />
+          <input
+            type="submit"
+            value="Update Task"
+            className="bg-green-700 py-2 px-5 absolute right-0 rounded-r-2xl cursor-pointer"
+            onClick={hendleupdateBtn}
+          />
+        </div>
+      </div>
     </div>
   );
 }
