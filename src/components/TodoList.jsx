@@ -55,6 +55,7 @@ function TodoList() {
         .delete(`http://localhost:7000/delettodo/${id}`)
         .then(() => {
           toast.success("Task Delet Successfully");
+          window.location.reload();
         })
         .catch((err) => {
           toast.error(err.message);
@@ -66,6 +67,12 @@ function TodoList() {
   const editbox = (id) => {
     setUpdateId(id);
     setEdit(!edit);
+  };
+
+  const handleEnterKeyPress = (e) => {
+    if (e.key === "Enter") {
+      hendleupdateBtn();
+    }
   };
 
   const hendleupdateBtn = () => {
@@ -80,6 +87,7 @@ function TodoList() {
         .then(() => {
           setEdit(false);
           toast.success("task Updated Successfully");
+          window.location.reload();
         })
         .catch((err) => {
           toast.error(err.message);
@@ -148,7 +156,10 @@ function TodoList() {
               type="text"
               className="bg-gray-100 rounded-2xl  w-full py-2 px-5"
               placeholder="Update Your Task"
+              value={updateTask}
+              onKeyDown={handleEnterKeyPress}
               onChange={(e) => setUpdateTask(e.target.value)}
+              autoFocus
             />
             <input
               type="submit"
