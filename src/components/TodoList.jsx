@@ -122,12 +122,15 @@ function TodoList() {
 
         <div className="mt-5">
           <ul>
-            {alltask.map((item) => (
+            {alltask.map((item,index) => (
               <li
                 key={item._id}
                 className="text-lg font-medium capitalize bg-white rounded-2xl py-2 px-4 mb-3 flex items-center justify-between"
               >
-                <div>{item.title}</div>
+                <div>
+                  <span className="mr-1.5">{index + 1}.</span>
+                  <span>{item.title}</span>
+                </div>
 
                 <div className="flex items-center gap-4">
                   <span>
