@@ -62,6 +62,19 @@ function TodoList() {
         });
     }
   };
+  // all delete button
+
+  const hendleAllDeleteBtn = () => {
+    axios
+      .delete("http://localhost:7000/deleteall")
+      .then(() => {
+        toast.success("All Task Deleted successfully");
+        window.location.reload();
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
+  };
 
   // update function
   const editbox = (id) => {
@@ -122,7 +135,7 @@ function TodoList() {
 
         <div className="mt-5">
           <ul>
-            {alltask.map((item,index) => (
+            {alltask.map((item, index) => (
               <li
                 key={item._id}
                 className="text-lg font-medium capitalize bg-white rounded-2xl py-2 px-4 mb-3 flex items-center justify-between"
@@ -149,6 +162,17 @@ function TodoList() {
               </li>
             ))}
           </ul>
+
+          {alltask.length > 1 && (
+            <div className="w-full text-center">
+              <button
+                className="bg-red-500 text-white px-3 py-2 rounded-2xl cursor-pointer hover:bg-black duration-300 "
+                onClick={hendleAllDeleteBtn}
+              >
+                Delete All Task
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
